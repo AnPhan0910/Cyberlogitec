@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="mybatis.phanan.mapper.StudentMapper">
+    <insert id="insertStudent" parameterType="Student" >
+        INSERT INTO STUDENT (NAME, BRANCH, PERCENTAGE, PHONE, EMAIL ) VALUES (#{name}, #{branch}, #{percentage}, #{phone}, #{email});
+    </insert>
+ 
+    <update id="updateStudent" parameterType="Student">
+        UPDATE STUDENT SET EMAIL = #{email}, NAME = #{name}, BRANCH = #{branch}, PERCENTAGE = #{percentage}, PHONE = #{phone} WHERE ID = #{id};
+    </update>
+     
+    <delete id="deleteStudentById" parameterType="int">
+        DELETE from STUDENT WHERE ID = #{id};
+    </delete>
+     
+    <select id="selectAllStudent" resultMap="result">
+        SELECT * FROM STUDENT;
+    </select>
+     
+    <select id="selectStudentById" parameterType="int" resultType="Student">
+        SELECT * FROM STUDENT WHERE ID = #{id};
+    </select>
+    
+    <select id="findStudent" parameterType="Student" resultType="Student">
+    	
+    	<choose>
+    		<when test="name != null">
+    			<bind name="name" value="'%' + _parameter.getName() + '%'"/>
+    		</when>
+    		<otherwise>
+    			<bind name="name" value="'%%'"/>
+    		</otherwise>
+    	</choose>
+    	
+    	<choose>
+    		<when test="branch != null">
+    			<bind name="branch" value="'%' + _parameter.getBranch() + '%'"/>
+    		</when>
+    		<otherwise>
+    			<bind name="branch" value="'%%'"/>
+    		</otherwise>
+    	</choose>
+    	
+    	<choose>
+    		<when test="percentage != null">
+    			<bind name="percentage" value="'%' + _parameter.getPercentage() + '%'"/>
+    		</when>
+    		<otherwise>
+    			<bind name="percentage" value="'%%'"/>
+    		</otherwise>
+    	</choose>
+    	
+ 
+    	
+    	<choose>
+    		<when test="email != null">
+    			<bind name="email" value="'%' + _parameter.getEmail() + '%'"/>
+    		</when>
+    		<otherwise>
+    			<bind name="email" value="'%%'"/>
+    		</otherwise>
+    	</choose>
+    	
+    	<!-- Query -->
+    	SELECT * FROM STUDENT WHERE
+    	NAME = #{name} 
+    	and BRANCH = #{branch}
+    	and PERCENTAGE = #{percentage}
+    	<choose>
+    		<when test="phone != null">
+    			<bind name="phone" value=""/>
+    		</when>
+    	</choose>
+    	and EMAIL = #{email}
+    </select>
+     
+    <resultMap id = "result" type = "Student">
+       <result property = "id" column = "ID"/>
+       <result property = "name" column = "NAME"/>
+       <result property = "branch" column = "BRANCH"/>
+       <result property = "percentage" column = "PERCENTAGE"/>
+       <result property = "phone" column = "PHONE"/>
+       <result property = "email" column = "EMAIL"/>
+    </resultMap>
+</mapper>
