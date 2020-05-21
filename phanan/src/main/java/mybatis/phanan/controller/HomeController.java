@@ -36,4 +36,20 @@ public class HomeController {
 		List<Student> output = studentService.findStudent(student);
 		return output;
 	}
+	
+	@RequestMapping(value = "/add", method = RequestMethod.POST, headers = {"content-type=application/json"})
+	@ResponseBody
+	public int addStudent(@RequestBody Student student) {
+		if(student.getId() == 0) {
+			return studentService.insertStudent(student);
+		} else {
+			return studentService.updateStudent(student);
+		}
+	}
+	
+	@RequestMapping(value = "/del", method = RequestMethod.POST, headers = {"content-type=application/json"})
+	@ResponseBody
+	public int delStudent(@RequestBody Student student) {
+		return studentService.deleteStudentById(student.getId());
+	}
 }

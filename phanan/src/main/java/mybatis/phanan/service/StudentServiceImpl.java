@@ -40,6 +40,7 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> findStudent(Student student) {
+		System.out.println(student);
 		return studentMapper.findStudent(student);
 	}
 }
